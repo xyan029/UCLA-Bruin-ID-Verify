@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int verify_ucla_id(char uid[]) {
+    int len = strlen(uid);
+
+    for (int i = 0; i < len; i++) {
+        if (!isdigit(uid[i])) return 0;
+    }
+
+    int first_digit = uid[0] - '0';
+    int total = 0;
+
+    for (int i = 1; i < len; i++) {
+        int d = uid[i] - '0';
+        int pos_from_end = len - 1 - i;
+
+        if (pos_from_end % 2 == 0) {
+            int doubled = d * 2;
+            total += doubled / 10 + doubled % 10;
+        } else {
+            total += d;
+        }
+    }
+
+    return (total + first_digit) % 10 == 0;
+}
+
+int main() {
+    char uid[100];
+    printf("Enter your UCLA ID: ");
+    scanf("%s", uid);
+    
+    if (verify_ucla_id(uid)) {
+        printf("True Bruin\n");
+    } else {
+        printf("Go Bears\n");
+    }
+}
