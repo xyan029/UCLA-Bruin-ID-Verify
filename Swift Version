@@ -1,0 +1,34 @@
+import Foundation
+
+func isValid(_ uid: String) -> Bool {
+    // Check all characters are digits
+    guard uid.allSatisfy({ $0.isNumber }), !uid.isEmpty else { return false }
+    
+    let digits = uid.compactMap({ $0.wholeNumberValue })
+    let firstDigit = digits[0]
+    let rest = Array(digits[1...])
+    
+    var total = 0
+    for i in 0..<rest.count {
+        let d = rest[i]
+        let posFromEnd = rest.count - 1 - i
+        
+        if posFromEnd % 2 == 0 {
+            let doubled = d * 2
+            total += doubled / 10 + doubled % 10
+        } else {
+            total += d
+        }
+    }
+    
+    return (total + firstDigit) % 10 == 0
+}
+
+print("Enter your UCLA ID:")
+if let uid = readLine() {
+    if isValid(uid) {
+        print("True Bruin")
+    } else {
+        print("Go Bears")
+    }
+}
